@@ -1,0 +1,35 @@
+<section class="container my-2 my-sm-4 py-2 py-sm-4">
+	<article class="container">
+		<h1 appTextTypingAnimation [text]="'Todos list'" [pointer]="'_'" class="text text-center"></h1>
+	</article>
+	<article class="row" *ngIf="todos else loading">
+		<div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3 mb-sm-4" *ngFor="let todo of todos">
+			<div class="card">
+				<div class="card-header">
+					<h1 class="card-title text-center">
+						{{ todo.title }}
+					</h1>
+				</div>
+				<div class="card-body text-center">
+					<span [ngSwitch]="todo.status">
+						<span *ngSwitchCase="'WAITING'" class="alert alert-danger" role="alert">
+							Status: <span class="text-bold">Waiting</span>
+						</span>
+						<span *ngSwitchCase="'DOING'" class="alert alert-warning" role="alert">
+							Status: <span class="text-bold">Doing</span>
+						</span>
+						<span *ngSwitchCase="'DONE'" class="alert alert-success" role="alert">
+							Status: <span class="text-bold">Done</span>
+						</span>
+					</span>
+				</div>
+				<div class="card-footer">
+					<a class="btn btn-dark btn-block"  routerLink="/client/todo/{{ todo.id }}">Show details</a>
+				</div>
+			</div>
+		</div>
+	</article>
+</section>
+<ng-template #loading>
+	<app-spinner></app-spinner>
+</ng-template>

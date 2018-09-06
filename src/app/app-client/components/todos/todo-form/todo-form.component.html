@@ -1,0 +1,57 @@
+<form class="card bg-light" [formGroup]="form" (submit)="Submit()">
+	<article class="card-header">
+		<h1 class="card-title text-center">{{ todo ? 'Update todo' : 'New todo' }}</h1>
+	</article>
+	<article class="card-body">
+		<div class="form-row">
+			<div class="col-sm">
+				<div class="form-group">
+					<label for="title">Title:</label>
+					<input type="text" id="title" class="form-control"  [class.is-valid]="!FrmCtrlErrs('title')" [class.is-invalid]="FrmCtrlErrs('title')"
+						formControlName="title" (change)="Change()">
+					<small class="invalid-feedback" appFormControlErrors [name]="'title'" [errors]="FrmCtrlErrs('title')"></small>
+					<small class="valid-feedback">Title is valid.</small>
+				</div>
+			</div>
+			<div class="col-sm">
+				<div class="form-group">
+					<label for="status">Status:</label>
+					<select id="status" class="form-control"  [class.is-valid]="!FrmCtrlErrs('status')" [class.is-invalid]="FrmCtrlErrs('status')"
+						formControlName="status" (change)="Change()">
+						<option [value]="" disabled selected></option>
+						<option [value]="'WAITING'">Waiting</option>
+						<option [value]="'DOING'">Doing</option>
+						<option [value]="'DONE'">Done</option>
+					</select>
+					<small class="invalid-feedback" appFormControlErrors [name]="'status'" [errors]="FrmCtrlErrs('status')"></small>
+					<small class="valid-feedback">Status is valid.</small>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="description">Description:</label>
+			<textarea id="description" rows="8" class="form-control"  [class.is-valid]="!FrmCtrlErrs('description')" [class.is-invalid]="FrmCtrlErrs('description')"
+				formControlName="description" (change)="Change()"></textarea>
+			<small class="invalid-feedback" appFormControlErrors [name]="'description'" [errors]="FrmCtrlErrs('description')"></small>
+			<small class="valid-feedback">Description is valid.</small>
+		</div>
+		<div class="form-row" *ngIf="todo && todo.createdAt && todo.updatedAt">
+			<div class="col-sm" *ngIf="todo.createdAt">
+				<div class="form-group">
+					<label for="created-at">Created at:</label>
+					<span class="form-control disabled">{{ todo.createdAt | enDate }}</span>
+				</div>
+			</div>
+			<div class="col-sm" *ngIf="todo.updatedAt">
+				<div class="form-group">
+					<label for="updated-at">Updated at:</label>
+					<span class="form-control disabled">{{ todo.updatedAt | enDate }}</span>
+				</div>
+			</div>
+		</div>
+	</article>
+	<article class="card-footer d-flex justify-content-around">
+		<button type="submit" class="btn btn-dark btn-lg col-6 mr-2" [disabled]="!form.valid">{{ todo ? 'Update' : 'Create' }}</button>
+		<button type="button" class="btn btn-danger btn-lg col-6 ml-2" (click)="Cancel()">Cancel</button>
+	</article>
+</form>

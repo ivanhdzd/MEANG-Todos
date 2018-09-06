@@ -1,0 +1,55 @@
+#navbar {
+	z-index: 100;
+}
+
+#navbar-toggler-button {
+	border-color: gray;
+}
+
+.active {
+	border-bottom: white 2px solid !important;
+	color: white !important;
+}
+
+.cover {
+	background-color: rgba($color: black, $alpha: 0);
+	height: 100%;
+	position: absolute;
+	top: 0;
+	transition: 0.5s all;
+	width: 100%;
+	z-index: 99;
+	&-dark {
+		background-color: rgba($color: black, $alpha: 0.375);
+		overflow-x: hidden;
+		position: fixed;
+		transition: 0.5s all;
+	}
+}
+
+a {
+	color: lightgray !important;
+	cursor: pointer;
+	transition: 0.25s all;
+	&:hover {
+		color: white !important;
+	}
+}
+
+footer {
+	color: white;
+}
+
+@media screen and (max-width: 633px) {
+	#router-container {
+		margin-top: 4rem;
+		min-height: calc(100vh - 14.5rem);
+	}
+}
+
+@media screen and (min-width: 634px) {
+	#router-container {
+		margin-top: 5rem;
+		min-height: calc(100vh - 15.5rem);
+	}
+}

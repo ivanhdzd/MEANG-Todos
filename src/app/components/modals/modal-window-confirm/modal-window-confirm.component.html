@@ -1,0 +1,26 @@
+<button id="btn-show-modal-confirm" type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#confirm-modal">
+	This button to open modal window confirm must be hidden
+</button>
+
+<section id="confirm-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirm-modal" aria-hidden="true">
+	<article class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="modal-title-label" class="modal-title">{{ title }}</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" [innerHTML]="message">
+			</div>
+			<div class="modal-footer">
+				<div class="col">
+					<button type="button" class="btn btn-dark btn-lg btn-block" data-dismiss="modal" (click)="Accept()">Accept</button>
+				</div>
+				<div class="col">
+					<button type="button" class="btn btn-danger btn-lg btn-block" data-dismiss="modal" (click)="Cancel()">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</article>
+</section>

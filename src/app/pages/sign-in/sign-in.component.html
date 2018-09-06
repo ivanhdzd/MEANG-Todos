@@ -1,0 +1,35 @@
+<section class="container my-2 my-sm-5 py-2 py-sm-5">
+	<article class="row">
+		<div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+			<form [formGroup]="form" class="card bg-light" (submit)="SignIn()">
+				<div class="card-header">
+					<h1 class="card-title text-center">Sign in</h1>
+				</div>
+				<div class="card-body">
+					<div class="form-group">
+						<label for="email">Email:</label>
+						<input type="email" id="email" class="form-control" [class.is-valid]="!FrmCtrlErrs('email')" [class.is-invalid]="FrmCtrlErrs('email')"
+							formControlName="email">
+						<small class="invalid-feedback" appFormControlErrors [name]="'email'" [errors]="FrmCtrlErrs('email')"></small>
+						<small class="valid-feedback">Email is valid.</small>
+					</div>
+					<div class="form-group">
+						<label for="password">Password:</label>
+						<input type="password" id="password" class="form-control" [class.is-valid]="!FrmCtrlErrs('password')" [class.is-invalid]="FrmCtrlErrs('password')"
+							formControlName="password">
+						<small class="invalid-feedback" appFormControlErrors [name]="'password'" [errors]="FrmCtrlErrs('password')"></small>
+						<small class="valid-feedback">Password is valid.</small>
+					</div>
+					<hr>
+					<div class="text-center">
+						Don't have an account? <a routerLink="/sign-up">Sign up here!</a>
+					</div>
+				</div>
+				<div class="card-footer d-flex justify-content-around">
+					<button type="submit" class="btn btn-dark btn-lg col-6 mr-2" [disabled]="!form.valid">Sign in</button>
+					<button type="reset" class="btn btn-danger btn-lg col-6 ml-2">Cancel</button>
+				</div>
+			</form>
+		</div>
+	</article>
+</section>

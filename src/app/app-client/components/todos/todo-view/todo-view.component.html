@@ -1,0 +1,34 @@
+<section class="card card-body bg-light" *ngIf="todo">
+	<article class="form-row">
+		<div class="col-sm">
+			<div class="form-group">
+				<label for="title">Title:</label>
+				<input type="text" id="title" class="form-control" [ngModel]="todo.title" disabled>
+			</div>
+		</div>
+		<div class="col-sm">
+			<div class="form-group">
+				<label for="status">Status:</label>
+				<input type="text" id="status" class="form-control" [ngModel]="todo.status" disabled>
+			</div>
+		</div>
+	</article>
+	<article class="form-group">
+		<label for="description">Description:</label>
+		<textarea id="description" rows="8" class="form-control" [ngModel]="todo.description" disabled></textarea>
+	</article>
+	<article class="form-row">
+		<div class="col-sm">
+			<div class="form-group">
+				<label for="created-at">Created at:</label>
+				<span class="form-control disabled">{{ todo.createdAt | enDate }}</span>
+			</div>
+		</div>
+		<div class="col-sm">
+			<div class="form-group">
+				<label for="updated-at">Updated at:</label>
+				<span class="form-control disabled">{{ todo.updatedAt | enDate }}</span>
+			</div>
+		</div>
+	</article>
+</section>

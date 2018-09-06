@@ -1,0 +1,90 @@
+<section class="container my-2 my-sm-5 py-2 py-sm-5">
+	<form [formGroup]="form" class="card bg-light" (submit)="SignUp()">
+		<article class="card-header">
+			<h1 class="card-title text-center">Sign up</h1>
+		</article>
+		<article class="card-body">
+			<div class="form-row">
+				<div class="col-12 col-md-6">
+					<div class="form-group">
+						<label for="name">Name:</label>
+						<input type="text" id="name" class="form-control" [class.is-valid]="!FrmCtrlErrs('name')" [class.is-invalid]="FrmCtrlErrs('name')"
+							formControlName="name" (change)="Change()">
+						<small class="invalid-feedback" appFormControlErrors [name]="'name'" [errors]="FrmCtrlErrs('name')"></small>
+						<small class="valid-feedback">Name is valid.</small>
+					</div>
+				</div>
+				<div class="col-12 col-md-6">
+					<div class="form-group">
+						<label for="last-name">Last name:</label>
+						<input type="text" id="last-name" class="form-control" [class.is-valid]="!FrmCtrlErrs('lastName')" [class.is-invalid]="FrmCtrlErrs('lastName')"
+							formControlName="lastName" (change)="Change()">
+						<small class="invalid-feedback" appFormControlErrors [name]="'lastName'" [errors]="FrmCtrlErrs('lastName')"></small>
+						<small class="valid-feedback">Last name is valid.</small>
+					</div>
+				</div>
+				<div class="col-12 col-md-6">
+					<div class="form-group">
+						<label for="mother-last-name">Mother last name:</label>
+						<input type="text" id="mother-last-name" class="form-control" [class.is-valid]="!FrmCtrlErrs('motherLastName')" [class.is-invalid]="FrmCtrlErrs('motherLastName')"
+							formControlName="motherLastName" (change)="Change()">
+						<small class="invalid-feedback" appFormControlErrors [name]="'motherLastName'" [errors]="FrmCtrlErrs('motherLastName')"></small>
+						<small class="valid-feedback">Mother last name is valid.</small>
+					</div>
+				</div>
+				<div class="col-12 col-md-6">
+					<div class="form-group">
+						<label for="phone">Phone:</label>
+						<input type="tel" id="phone" class="form-control" [class.is-valid]="!FrmCtrlErrs('phone')" [class.is-invalid]="FrmCtrlErrs('phone')"
+							formControlName="phone" (change)="Change()">
+						<small class="invalid-feedback" appFormControlErrors [name]="'phone'" [errors]="FrmCtrlErrs('phone')"></small>
+						<small class="valid-feedback">Phone is valid.</small>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="form-row">
+				<div class="col-12 col-md-6">
+					<div class="form-group">
+						<label for="username">Username:</label>
+						<input type="text" id="username" class="form-control" [class.is-valid]="!FrmCtrlErrs('username')" [class.is-invalid]="FrmCtrlErrs('username')"
+							formControlName="username" (change)="Change()">
+						<small class="invalid-feedback" appFormControlErrors [name]="'username'" [errors]="FrmCtrlErrs('username')"></small>
+						<small class="valid-feedback">Username is valid.</small>
+					</div>
+				</div>
+				<div class="col-12 col-md-6">
+					<div class="form-group">
+						<label for="email">Email:</label>
+						<input type="email" id="email" class="form-control" [class.is-valid]="!FrmCtrlErrs('email')" [class.is-invalid]="FrmCtrlErrs('email')"
+							formControlName="email" (change)="Change()">
+						<small class="invalid-feedback" appFormControlErrors [name]="'email'" [errors]="FrmCtrlErrs('email')"></small>
+						<small class="valid-feedback">Email is valid.</small>
+					</div>
+				</div>
+				<div class="col-12 col-md-6">
+					<div class="form-group">
+						<label for="password">Password:</label>
+						<input type="password" id="password" class="form-control" [class.is-valid]="!FrmCtrlErrs('password')" [class.is-invalid]="FrmCtrlErrs('password')"
+							formControlName="password" (change)="Change()">
+						<small class="invalid-feedback" appFormControlErrors [name]="'password'" [errors]="FrmCtrlErrs('password')"></small>
+						<small class="valid-feedback">Password is valid.</small>
+					</div>
+				</div>
+				<div class="col-12 col-md-6">
+					<div class="form-group">
+						<label for="confirm-password">Confirm password:</label>
+						<input type="password" id="confirm-password" class="form-control" [class.is-valid]="!FrmCtrlErrs('confirmPassword')" [class.is-invalid]="FrmCtrlErrs('confirmPassword')"
+							formControlName="confirmPassword" (change)="Change()">
+						<small class="invalid-feedback" appFormControlErrors [name]="'confirmPassword'" [errors]="FrmCtrlErrs('confirmPassword')"></small>
+						<small class="valid-feedback">Confirm password is valid.</small>
+					</div>
+				</div>
+			</div>
+		</article>
+		<article class="card-footer d-flex justify-content-around">
+			<button type="submit" class="btn btn-dark btn-lg col-6 mr-2" [disabled]="!form.valid">Sign in</button>
+			<button type="button" class="btn btn-danger btn-lg col-6 ml-2" (click)="Cancel()">Cancel</button>
+		</article>
+	</form>
+</section>

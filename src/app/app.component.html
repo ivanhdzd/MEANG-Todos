@@ -1,0 +1,56 @@
+<nav id="navbar" class="navbar navbar-expand-sm navbar-dark fixed-top bg-dark">
+	<div class="container-fluid">
+		<span [ngSwitch]="authStatus">
+			<a class="navbar-brand" *ngSwitchCase="'PUBLIC'" routerLink="/" (click)="CloseDropdown()">Todos</a>
+			<a class="navbar-brand" *ngSwitchCase="'CLIENT'" routerLink="/client/todos" (click)="CloseDropdown()">{{ currentUser?.username }}</a>
+		</span>
+		<button id="navbar-toggler-button" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content"
+			aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation" (click)="dropdownOpen = !dropdownOpen">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbar-content">
+			<ul class="navbar-nav mr-auto"></ul>
+			<span [ngSwitch]="authStatus">
+				<ul class="navbar-nav my-2 my-lg-0" *ngSwitchCase="'LOADING'">
+					<li class="nav-item">
+						<span style="color: white">Loading...</span>
+					</li>
+				</ul>
+				<ul class="navbar-nav my-2 my-lg-0" *ngSwitchCase="'PUBLIC'">
+					<li class="nav-item">
+						<a routerLink="/sign-in" routerLinkActive="active" class="nav-link" (click)="CloseDropdown()">Sign in</a>
+					</li>
+					<li class="nav-item">
+						<a routerLink="/sign-up" routerLinkActive="active" class="nav-link" (click)="CloseDropdown()">Sign up</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav my-2 my-lg-0" *ngSwitchCase="'CLIENT'">
+					<li class="nav-item">
+						<a routerLink="/client/todos" routerLinkActive="active" class="nav-link" (click)="CloseDropdown()">Todos</a>
+					</li>
+					<li class="nav-item">
+						<a routerLink="/client/create-todo" routerLinkActive="active" class="nav-link" (click)="CloseDropdown()">Create a todo</a>
+					</li>
+					<li class="nav-item">
+						<a routerLink="/client/profile" routerLinkActive="active" class="nav-link" (click)="CloseDropdown()">Profile</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" (click)="CloseDropdown(); SignOut()">Sign out</a>
+					</li>
+				</ul>
+			</span>
+		</div>
+	</div>
+</nav>
+<section class="cover" *ngIf="dropdownOpen" [class.cover-dark]="dropdownOpen" (click)="CloseDropdown()"></section>
+
+<section id="router-container" class="mx-sm-5 px-sm-5">
+	<router-outlet></router-outlet>
+</section>
+
+<footer class="bg-dark text-center mt-5 py-5">
+	Footer &middot; Footer
+</footer>
+
+<app-modal-window-message></app-modal-window-message>
+<app-modal-window-confirm></app-modal-window-confirm>

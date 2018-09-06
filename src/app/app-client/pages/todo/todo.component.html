@@ -1,0 +1,24 @@
+<section class="container my-2 my-sm-5 py-2 py-sm-5" *ngIf="todo else spinner">
+	<article *ngIf="!proceeding else spinner">
+		<div class="mb-3 mb-sm-5 d-flex justify-content-between" *ngIf="!editing">
+			<span>
+				<button class="btn btn-dark btn-lg" (click)="editing = true">Edit todo</button>
+			</span>
+			<span>
+				<button class="btn btn-danger btn-lg" (click)="Delete()">Delete todo</button>
+			</span>
+		</div>
+		<div [ngSwitch]="editing">
+			<div *ngSwitchCase="true">
+				<app-todo-form [todo]="todo" (OnSubmit)="Save($event)" (OnCancel)="editing = false"></app-todo-form>
+			</div>
+			<div *ngSwitchCase="false">
+				<app-todo-view [todo]="todo"></app-todo-view>
+			</div>
+		</div>
+	</article>
+</section>
+<ng-template #spinner>
+	<h1 class="text-center">{{ spinnerMessage }}</h1>
+	<app-spinner></app-spinner>
+</ng-template>

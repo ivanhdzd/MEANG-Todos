@@ -1,0 +1,5 @@
+export enum AUTH_STATUS {
+	LOADING = 'LOADING',
+	PUBLIC = 'PUBLIC',
+	CLIENT = 'CLIENT',
+}

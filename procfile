@@ -1,0 +1,2 @@
+server: nodemon --exec babel-node server/index.js
+client: ng serve --port 5000 --open
