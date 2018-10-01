@@ -11,12 +11,10 @@ import { User } from '../../models/user.model';
 	providedIn: 'root'
 })
 export class AuthService extends BaseAuthService {
+	/** Apollo instance name */
 	protected apolloIntance: string = 'public';
 
-	constructor(
-		protected apollo: Apollo,
-		protected store: Store<AppState>
-	) {
+	constructor(protected apollo: Apollo, protected store: Store<AppState>) {
 		super(apollo, store);
 	}
 

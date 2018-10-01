@@ -12,6 +12,7 @@ import { ModalWindowService } from '../../services/modal-window/modal-window.ser
 	styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent implements OnInit {
+	/** Sign in form */
 	public form: FormGroup = new FormGroup({
 		email: new FormControl('', [Validators.email, Validators.required]),
 		password: new FormControl('', [Validators.minLength(6), Validators.required]),
@@ -59,8 +60,7 @@ export class SignInComponent implements OnInit {
 			this.router.navigateByUrl('/client/todos');
 		} catch (err) {
 			console.warn('[ERROR] SignInComponent.SignIn:', err);
-			this.form.get('email').reset();
-			this.form.get('password').reset();
+			this.form.reset();
 			this.modal.OpenMessage({
 				title: 'Oops!',
 				message: 'Your email or password is wrong!'

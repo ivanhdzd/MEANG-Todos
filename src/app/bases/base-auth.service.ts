@@ -1,6 +1,6 @@
 import { Apollo } from 'apollo-angular';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 
 import { AppState } from '../ngrx/app-state';
 import { BaseApolloGraphQLService } from './base-apollo-graphql.service';
@@ -13,8 +13,12 @@ export abstract class BaseAuthService extends BaseApolloGraphQLService {
 
 	/** Authentication status value */
 	private static _status: AUTH_STATUS = AUTH_STATUS.LOADING;
-	/** A BehaviorSubject authentication status */
+	/** Authentication status BehaviorSubject */
 	private static _statusBS: BehaviorSubject<AUTH_STATUS> = new BehaviorSubject<AUTH_STATUS>(AUTH_STATUS.LOADING);
+	/** Authentication status Observable */
+	public readonly status$: Observable<AUTH_STATUS> = BaseAuthService._statusBS.asObservable();
+	/** Current user data Observable */
+	public readonly currentUser$: Observable<User> = this.store.select('currentUser');
 
 	/** ID client token properties */
 	public get token(): string { return localStorage.getItem('token') }
@@ -22,10 +26,7 @@ export abstract class BaseAuthService extends BaseApolloGraphQLService {
 
 //#endregion VARIABLES
 
-	constructor(
-		protected apollo: Apollo,
-		protected store: Store<AppState>
-	) {
+	constructor(protected apollo: Apollo, protected store: Store<AppState>) {
 		super(apollo);
 		this._Init();
 	}
@@ -40,24 +41,6 @@ export abstract class BaseAuthService extends BaseApolloGraphQLService {
 		localStorage.clear();
 		this.PublishStatus(AUTH_STATUS.PUBLIC);
 		this.store.dispatch(new ClearCurrentUser(null));
-	}
-
-	/**
-	 * Subscribe to auth status.
-	 * @param callback Function with status as unique parameter.
-	 * @returns Subscription
-	 */
-	public Subscribe2Status(callback: Function): Subscription {
-		return BaseAuthService._statusBS.subscribe((status: AUTH_STATUS) => callback(status));
-	}
-
-	/**
-	 * Subscribe to current user data.
-	 * @param callback Function with current user data as unique parameter.
-	 * @returns Subscription
-	 */
-	public Subscribe2CurrentUser(callback: Function): Subscription {
-		return this.store.select('currentUser').subscribe((user: User) => callback(user));
 	}
 
 //#endregion PUBLIC

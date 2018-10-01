@@ -8,9 +8,13 @@ import { AUTH_STATUS } from '../../../enumerators/auth-status.enumerator';
 export class ClientGuard implements CanActivate {
 	constructor(private router: Router, private auth: AuthService) {}
 
+	/**
+	 * Validate that a client user is already logged to can access.
+	 * @returns Promise<boolean> if current user is a valid client.
+	 */
 	public canActivate(): Promise<boolean> {
 		return new Promise((resolve: Function) => {
-			this.auth.Subscribe2Status((status: AUTH_STATUS) => {
+			this.auth.status$.subscribe((status: AUTH_STATUS) => {
 				switch (status) {
 					case AUTH_STATUS.LOADING:
 						break;

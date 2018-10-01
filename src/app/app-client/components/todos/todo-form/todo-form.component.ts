@@ -11,15 +11,17 @@ import { Todo } from '../../../../models/todo.model';
 	styleUrls: ['./todo-form.component.scss']
 })
 export class TodoFormComponent implements OnInit {
+	/** Todo form */
 	public form: FormGroup = new FormGroup({
 		title: new FormControl('', Validators.required),
 		status: new FormControl('', Validators.required),
 		description: new FormControl('', Validators.required),
 	});
-
+	/** Todo input */
 	@Input() public todo: Todo = null;
-
+	/** On submit event emitter output */
 	@Output() private OnSubmit: EventEmitter<Todo> = new EventEmitter<Todo>();
+	/** On cancel event emitter output */
 	@Output() private OnCancel: EventEmitter<void> = new EventEmitter<void>();
 
 	constructor(private onBeforeUnload: OnBeforeUnloadService, private modal: ModalWindowService) {}

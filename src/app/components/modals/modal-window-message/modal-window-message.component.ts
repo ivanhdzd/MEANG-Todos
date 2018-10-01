@@ -24,11 +24,11 @@ export class ModalWindowMessageComponent implements OnInit, OnDestroy {
 
 	/**
 	 * Subscript to modal window message.
+	 * @returns void
 	 */
 	public ngOnInit(): void {
 		this._btn = <HTMLButtonElement>document.getElementById('btn-show-modal-message');
-
-		this._sub = this.modalWindowService.SubscribeToMessage((data: ModalWindowMessage) => {
+		this._sub = this.modalWindowService.message$.subscribe((data: ModalWindowMessage) => {
 			if (!data) return;
 			this.title = data.title;
 			this.message = data.message;
@@ -38,6 +38,7 @@ export class ModalWindowMessageComponent implements OnInit, OnDestroy {
 
 	/**
 	 * Unsubscript to modal window message.
+	 * @returns void
 	 */
 	public ngOnDestroy(): void {
 		this._sub.unsubscribe();

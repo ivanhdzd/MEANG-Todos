@@ -8,6 +8,7 @@ import { Title } from '@angular/platform-browser';
 	styleUrls: ['./page-not-found.component.scss']
 })
 export class PageNotFoundComponent implements OnInit {
+	/** Seconds to await before redirect to index page */
 	public seconds: number = 5;
 
 	constructor(title: Title, private router: Router) {

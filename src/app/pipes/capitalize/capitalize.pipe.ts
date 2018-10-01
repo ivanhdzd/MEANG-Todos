@@ -6,7 +6,11 @@ import { capitalize } from '../../functions/helpers';
 	name: 'capitalize',
 })
 export class CapitalizePipe implements PipeTransform {
-	transform(value: string): string {
+	/**
+	 * Capitalize input value pipe function.
+	 * @param value Capitalized value.
+	 */
+	public transform(value: string): string {
 		return capitalize(value);
 	}
 }

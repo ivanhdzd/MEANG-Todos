@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ModalWindowMessage, ModalWindowConfirm } from '../../interfaces/modal-window.interface';
 
@@ -9,26 +9,12 @@ import { ModalWindowMessage, ModalWindowConfirm } from '../../interfaces/modal-w
 export class ModalWindowService {
 	/** BehaviorSubject to show modal window message */
 	private _message: BehaviorSubject<ModalWindowMessage> = new BehaviorSubject<ModalWindowMessage>(null);
+	/** Modal window message observable */
+	public readonly message$: Observable<ModalWindowMessage> = this._message.asObservable();
 	/** BehaviorSubject to show modal window confirm */
 	private _confirm: BehaviorSubject<ModalWindowConfirm> = new BehaviorSubject<ModalWindowConfirm>(null);
-
-	/**
-	 * Subscribe to BehaviorSubject message.
-	 * @param callback (Function) to execute in each message data change.
-	 * * @returns Subscription
-	 */
-	public SubscribeToMessage(callback: Function): Subscription {
-		return this._message.subscribe((message: ModalWindowMessage) => callback(message));
-	}
-
-	/**
-	 * Subscribe to BehaviorSubject confirm.
-	 * @param callback (Function) to execute in each confirm data change.
-	 * @returns Subscription
-	 */
-	public SubscribeToConfirm(callback: Function): Subscription {
-		return this._confirm.subscribe((confirm: ModalWindowConfirm) => callback(confirm));
-	}
+	/** Modal window confirm observable */
+	public readonly confirm$: Observable<ModalWindowMessage> = this._confirm.asObservable();
 
 	/**
 	 * Open modal window to show message.

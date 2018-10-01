@@ -4,21 +4,35 @@ import { Directive, OnInit, AfterViewInit, Input, ElementRef } from '@angular/co
 	selector: '[appTextTypingAnimation]'
 })
 export class TextTypingAnimationDirective  implements OnInit, AfterViewInit {
+	/** Input text to set typing effect */
 	@Input() public text: string = 'Add your text by an Angular Input.';
+	/** Latency time in each typing */
 	@Input() public latencyTime: number = 0.125;
+	/** Wait to invert effect */
 	@Input() public waitAtTheEnd: number = 1;
+	/** Pointer to set into end to text */
 	@Input() public pointer: string = '&#9612;'; /** http://www.webusable.com/CharsExtendedTable.htm */
 
+	/** Main container DOM object reference */
 	private _mainContainer: HTMLElement = null;
+	/** text container DOM object reference */
 	private _textContainer: HTMLElement = null;
+	/** style container DOM object reference */
 	private _styleContainer: HTMLElement = null;
+	/** pointer container DOM object reference */
 	private _pointerContainer: HTMLElement = null;
 
+	/** Interval reference */
 	private _interval: any = null;
+	/** Text length effetc */
 	private _length: number = 0;
+	/** Text count effetc */
 	private _count: number = 0;
 
-	/** https://codepen.io/sekane81/pen/JKuwb */
+	/**
+	 * CSS style content.
+	 * Reference: https://codepen.io/sekane81/pen/JKuwb
+	 */
 	private _styleContent: string = `
 		.text-animation-typing-pointer {
 			animation: blink-animation 0.75s steps(5, start) infinite;

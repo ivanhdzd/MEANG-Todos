@@ -11,8 +11,9 @@ import { User } from '../../../models/user.model';
 	styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit, OnDestroy {
+	/** User subscription */
 	private _usrSub: Subscription = null;
-
+	/** User data */
 	public user: User = null;
 
 	constructor(title: Title, private auth: AuthService) {
@@ -26,7 +27,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 	public ngOnInit(): void {
 		window.scroll(0, 0);
 		try {
-			this._usrSub = this.auth.Subscribe2CurrentUser((user: User) => this.user = user);
+			this._usrSub = this.auth.currentUser$.subscribe((user: User) => this.user = user);
 		} catch (err) {
 			console.warn('[ERROR] ProfileComponent.ngOnInit:', err);
 		}

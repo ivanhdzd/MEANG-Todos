@@ -3,6 +3,7 @@ import { Subscription, Observable } from 'rxjs';
 import gql from 'graphql-tag';
 
 export abstract class BaseApolloGraphQLService {
+	/** Apollo instance name */
 	protected apolloIntance: string = null;
 
 	constructor(protected apollo: Apollo) {}

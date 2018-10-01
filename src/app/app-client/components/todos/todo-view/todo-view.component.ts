@@ -8,5 +8,6 @@ import { Todo } from '../../../../models/todo.model';
 	styleUrls: ['./todo-view.component.scss']
 })
 export class TodoViewComponent {
+	/** Todo input */
 	@Input() public todo: Todo = null;
 }

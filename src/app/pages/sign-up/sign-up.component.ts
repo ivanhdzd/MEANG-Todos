@@ -15,6 +15,7 @@ import { User } from '../../models/user.model';
 	styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent implements OnInit {
+	/** Sign up form */
 	public form: FormGroup = new FormGroup({
 		name: new FormControl('', Validators.required),
 		lastName: new FormControl('', Validators.required),

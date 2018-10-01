@@ -9,22 +9,19 @@ import { User } from '../../../models/user.model';
 
 @Injectable()
 export class AuthService extends BaseAuthService {
+	/** Apollo instance name */
 	protected apolloIntance: string = 'client';
 
-	constructor(
-		protected apollo: Apollo,
-		protected store: Store<AppState>
-	) {
+	constructor(protected apollo: Apollo, protected store: Store<AppState>) {
 		super(apollo, store);
 	}
 
 	/**
 	 * Read user data from backend.
-	 * @returns Promise<User>
+	 * @returns Promise<User> current user data.
 	 */
 	public async ReadUser(): Promise<User> {
-		const query: string = `query { readUser
-			{ username, name, lastName, motherLastName, email, phone } }`;
+		const query: string = `query { readUser { username, name, lastName, motherLastName, email, phone } }`;
 		const { readUser } = await this.Query(query);
 		const user: User = <User>readUser;
 		this.store.dispatch(new SetCurrentUser(user));

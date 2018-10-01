@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class EventService {
+	/** Events map */
 	private _events: Map<string, BehaviorSubject<any>> = new Map();
 
 	/**
@@ -21,11 +22,10 @@ export class EventService {
 	/**
 	 * Subscribe to a BehaviorSubject.
 	 * @param name (string) subscription to get.
-	 * @param callback (Function) to inject to subscription.
-	 * @returns Subscription.
+	 * @returns Observable.
 	 */
-	public subscribe(name: string, callback: Function): Subscription {
+	public subscribe(name: string): Observable<any> {
 		if (!this._events.get(name)) this._events.set(name, new BehaviorSubject<any>(null));
-		return this._events.get(name).subscribe(evt => callback(evt));
+		return this._events.get(name).asObservable();
 	}
 }

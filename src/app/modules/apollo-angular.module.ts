@@ -24,13 +24,14 @@ import { AUTH_STATUS } from '../enumerators/auth-status.enumerator';
 	]
 })
 export class ApolloAngularModule {
+	/** Authentication status instance */
 	private _authStatus: AUTH_STATUS = AUTH_STATUS.LOADING;
 
 	constructor(apollo: Apollo, httpLink: HttpLink, auth: AuthService) {
 		/** Create Apollo public instance, it not need authentication credentials */
 		this._createApolloPublic(apollo, httpLink);
 		/** Subscribe to authentication status */
-		auth.Subscribe2Status((status: AUTH_STATUS) => {
+		auth.status$.subscribe((status: AUTH_STATUS) => {
 			if (this._authStatus === status) return;
 			/** Store authentication status */
 			this._authStatus = status;

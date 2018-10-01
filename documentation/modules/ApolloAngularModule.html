@@ -1,0 +1,236 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>meang-todos documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">meang-todos documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search">
+</div>
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content module">
+                   <div class="content-data">
+
+
+
+<ol class="breadcrumb">
+  <li>Modules</li>
+  <li>ApolloAngularModule</li>
+</ol>
+
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/modules/apollo-angular.module.ts</code>
+        </p>
+
+
+        
+
+        <div class="container-fluid module">
+            <div class="row">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { NgModule } from &#x27;@angular/core&#x27;;
+import { HttpClientModule, HttpHeaders } from &#x27;@angular/common/http&#x27;;
+import { ApolloModule, Apollo } from &#x27;apollo-angular&#x27;;
+import { HttpLinkModule, HttpLink } from &#x27;apollo-angular-link-http&#x27;;
+import { InMemoryCache } from &#x27;apollo-cache-inmemory&#x27;;
+import { getMainDefinition } from &#x27;apollo-utilities&#x27;;
+import { setContext } from &#x27;apollo-link-context&#x27;;
+import { WebSocketLink } from &#x27;apollo-link-ws&#x27;;
+import { split } from &#x27;apollo-link&#x27;;
+
+import { GQL_PUBLIC_URL, GQL_CLIENT_URL, WS_GQL_CLIENT_URL } from &#x27;../constants/urls&#x27;;
+import { AuthService } from &#x27;../services/auth/auth.service&#x27;;
+import { AUTH_STATUS } from &#x27;../enumerators/auth-status.enumerator&#x27;;
+
+@NgModule({
+	imports: [
+		HttpClientModule,
+		ApolloModule,
+		HttpLinkModule
+	],
+	exports: [
+		ApolloModule,
+		HttpLinkModule
+	]
+})
+export class ApolloAngularModule {
+	/** Authentication status instance */
+	private _authStatus: AUTH_STATUS &#x3D; AUTH_STATUS.LOADING;
+
+	constructor(apollo: Apollo, httpLink: HttpLink, auth: AuthService) {
+		/** Create Apollo public instance, it not need authentication credentials */
+		this._createApolloPublic(apollo, httpLink);
+		/** Subscribe to authentication status */
+		auth.status$.subscribe((status: AUTH_STATUS) &#x3D;&gt; {
+			if (this._authStatus &#x3D;&#x3D;&#x3D; status) return;
+			/** Store authentication status */
+			this._authStatus &#x3D; status;
+			/** Store apollo client instance in a variable */
+			const apolloInstance &#x3D; apollo.use(&#x27;client&#x27;);
+			/** Create/reset apollo client instance according to authentication status */
+			switch (status) {
+				case AUTH_STATUS.PUBLIC:
+					/** If apollo client instane exists, reset it */
+					if (apolloInstance) apolloInstance.getClient().resetStore();
+					break;
+				case AUTH_STATUS.CLIENT:
+					/** If apollo client instane exists reset it, else create it */
+					if (apolloInstance) apolloInstance.getClient().resetStore();
+					else this._createApolloClient(apollo, httpLink, auth);
+					break;
+			}
+		});
+	}
+
+	/**
+	 * Create Apollo Public bind with server.
+	 * @param apollo (Apollo) service.
+	 * @param httpLink (HttpLink) service.
+	 * @returns void
+	 */
+	private _createApolloPublic(apollo: Apollo, httpLink: HttpLink): void {
+		const link &#x3D; httpLink.create({ uri: GQL_PUBLIC_URL });
+		const cache &#x3D; new InMemoryCache();
+		apollo.create({ link, cache }, &#x27;public&#x27;);
+	}
+
+	/**
+	 * Create Apollo Client bind with server.
+	 * @param apollo (Apollo) service.
+	 * @param httpLink (HttpLink) service.
+	 * @returns void
+	 */
+	private _createApolloClient(apollo: Apollo, httpLink: HttpLink, auth: AuthService): void {
+		/** Create WebSocket Subscriptions with authentication credentials to apollo client instance */
+		const ws &#x3D; new WebSocketLink({
+			uri: WS_GQL_CLIENT_URL,
+			options: {
+				connectionParams: { authorization: &#x60;Bearer ${ auth.token }&#x60; },
+				reconnect: true
+			}
+		});
+		/** Create Apollo queries/mutations Http link connection with authentication credentials */
+		const http &#x3D; setContext((_, { headers }) &#x3D;&gt; {
+			if (!headers) headers &#x3D; new HttpHeaders();
+			const token: string &#x3D; auth.token;
+			if (token) headers &#x3D; headers.append(&#x27;authorization&#x27;, &#x60;Bearer ${ token }&#x60;);
+			return { headers };
+		}).concat(httpLink.create({ uri: GQL_CLIENT_URL }));
+		/** Binds WebSocket and Http link connections */
+		const link &#x3D; split(({ query }) &#x3D;&gt; {
+			const res &#x3D; getMainDefinition(query);
+			return res.kind &#x3D;&#x3D;&#x3D; &#x27;OperationDefinition&#x27; &amp;&amp; res.operation &#x3D;&#x3D;&#x3D; &#x27;subscription&#x27;;
+		}, ws, http);
+		/** Creates new chache instance */
+		const cache &#x3D; new InMemoryCache();
+		/** Create apollo client instance */
+		apollo.create({ link, cache }, &#x27;client&#x27;);
+	}
+}</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'module';
+            var COMPODOC_CURRENT_PAGE_URL = 'ApolloAngularModule.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <script src="../js/menu-wc.js"></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

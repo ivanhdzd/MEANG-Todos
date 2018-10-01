@@ -15,13 +15,18 @@ import { Todo } from '../../../models/todo.model';
 	styleUrls: ['./todo.component.scss']
 })
 export class TodoComponent implements OnInit, OnDestroy {
+	/** Todo updated subscription */
 	private _updatedSub: Subscription;
+	/** Todo deleted subscription */
 	private _deletedSub: Subscription;
-
+	/** Todo selected data */
 	public todo: Todo = null;
 
+	/** Spinner message */
 	public spinnerMessage: string = 'Loading...';
+	/** Proceeding boolean flag */
 	public proceeding: boolean = false;
+	/** Editing boolean flag */
 	public editing: boolean = false;
 
 	constructor(
@@ -117,7 +122,7 @@ export class TodoComponent implements OnInit, OnDestroy {
 	 */
 	private async _LoadTodo(id: string): Promise<void> {
 		/** Load all todos stored in local memory */
-		const todos: Todo[] = await observable2promise(this.todoService.todos);
+		const todos: Todo[] = await observable2promise(this.todoService.todos$);
 		/** If todos are null, load current todo data from backend */
 		if (!todos) {
 			this.todo = await this.todoService.ReadTodo(id);
@@ -143,7 +148,7 @@ export class TodoComponent implements OnInit, OnDestroy {
 	 */
 	public _Subscribe2TodoUpdatedAndTodoCreated(id: string): void {
 		/** Subscribe to todoUpdated backend subscription */
-		this._updatedSub = this.todoService.Subscribe2TodoUpdated((todo: Todo) => {
+		this._updatedSub = this.todoService.todoUpdated$.subscribe((todo: Todo) => {
 			if (todo.id !== id) return;
 			/** If todo updated is current todo, update current todo */
 			if (this.editing) this.modalWindow.OpenMessage({
@@ -156,7 +161,7 @@ export class TodoComponent implements OnInit, OnDestroy {
 			this.onBeforeUnload.thereAreChanges = false;
 		});
 		/** Subscribe to todoDeleted backend subscription */
-		this._deletedSub = this.todoService.Subscribe2TodoDeleted((todo: Todo) => {
+		this._deletedSub = this.todoService.todoDeleted$.subscribe((todo: Todo) => {
 			if (todo.id !== id) return;
 			/** If todo deleted is current todo, go to /client/todos route */
 			this.onBeforeUnload.thereAreChanges = false;

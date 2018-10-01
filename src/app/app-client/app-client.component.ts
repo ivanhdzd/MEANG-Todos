@@ -13,10 +13,14 @@ import { Todo } from '../models/todo.model';
 	styleUrls: ['./app-client.component.scss'],
 })
 export class AppClientComponent implements OnInit, OnDestroy {
+	/** Router subscription */
 	private _routerSub: Subscription;
 
+	/** Todo created subscription */
 	private _createdSub: Subscription;
+	/** Todo updated subscription */
 	private _updatedSub: Subscription;
+	/** Todo deleted subscription */
 	private _deletedSub: Subscription;
 
 	constructor(
@@ -40,19 +44,20 @@ export class AppClientComponent implements OnInit, OnDestroy {
 			/** Read todos from backend by a subscription */
 			this.todoService.ReadTodos();
 			/** Subscribe to todoCreated backend subscription */
-			this._createdSub = this.todoService.Subscribe2TodoCreated((todo: Todo) => this.modalWindow.OpenMessage({
+			this.todoService.todoCreated$.subscribe((todo: Todo) => console.info(todo));
+			this._createdSub = this.todoService.todoCreated$.subscribe((todo: Todo) => this.modalWindow.OpenMessage({
 				title: `New todo '${ todo.id }' created.`,
 				message: `New todo '${ todo.title }' is already created,
 				<a href="/client/todo/${ todo.id }" target="_blank">you can go to todo details here.</a>`
 			}));
 			/** Subscribe to todoUpdated backend subscription */
-			this._updatedSub = this.todoService.Subscribe2TodoUpdated((todo: Todo) => this.modalWindow.OpenMessage({
+			this._updatedSub = this.todoService.todoUpdated$.subscribe((todo: Todo) => this.modalWindow.OpenMessage({
 				title: `Todo '${ todo.id }' updated.`,
 				message: `Todo '${ todo.title }' is already updated,
 				<a href="/client/todo/${ todo.id }" target="_blank">you can go to todo details here.</a>`
 			}));
 			/** Subscribe to todoDeleted backend subscription */
-			this._deletedSub = this.todoService.Subscribe2TodoDeleted((todo: Todo) => this.modalWindow.OpenMessage({
+			this._deletedSub = this.todoService.todoDeleted$.subscribe((todo: Todo) => this.modalWindow.OpenMessage({
 				title: `Todo '${ todo.id }' deleted.`,
 				message: `Todo '${ todo.title }' was deleted from database.`
 			}));

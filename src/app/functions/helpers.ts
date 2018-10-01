@@ -3,16 +3,16 @@ import { Observable, Subscription } from 'rxjs';
 /**
  * Clone an object
  * @param input (any) object to clone.
- * @returns any
+ * @returns any object cloned.
  */
-export function clone(input): any {
+export function clone(input: any): any {
 	return JSON.parse(JSON.stringify(input));
 }
 
 /**
  * Get a observable value by a promise.
  * @param observable (Observable<any>) to get it value.
- * @returns Promise<any>
+ * @returns Promise<any> Observable value as promise.
  */
 export async function observable2promise(observable: Observable<any>): Promise<any> {
 	return new Promise((resolve: Function, reject: Function) => {
