@@ -84,5 +84,16 @@ UserSchema.methods.generateJWT = function() {
 	}, secret);
 }
 
+/**
+ * References:
+ * http://thecodebarbarian.com/mongoose-virtual-populate
+ * https://mongoosejs.com/docs/4.x/docs/guide.html
+ */
+UserSchema.virtual('todos', {
+	ref: 'Todo',
+	localField: '_id',
+	foreignField: 'user'
+});
+
 /** Set User schema to a model called User */
 export default mongoose.model('User', UserSchema);

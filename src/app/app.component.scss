@@ -18,12 +18,13 @@
 	top: 0;
 	transition: 0.5s all;
 	width: 100%;
-	z-index: 99;
+	z-index: -1;
 	&-dark {
 		background-color: rgba($color: black, $alpha: 0.375);
 		overflow-x: hidden;
 		position: fixed;
 		transition: 0.5s all;
+		z-index: 99;
 	}
 }
 

@@ -42,14 +42,14 @@
 		</div>
 	</div>
 </nav>
-<section class="cover" *ngIf="dropdownOpen" [class.cover-dark]="dropdownOpen" (click)="CloseDropdown()"></section>
+<section class="cover" [class.cover-dark]="dropdownOpen" (click)="CloseDropdown()"></section>
 
 <section id="router-container" class="mx-sm-5 px-sm-5">
 	<router-outlet></router-outlet>
 </section>
 
 <footer class="bg-dark text-center mt-5 py-5">
-	Footer &middot; Footer
+	&copy; Footer &middot; Footer
 </footer>
 
 <app-modal-window-message></app-modal-window-message>
