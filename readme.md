@@ -7,3 +7,5 @@
 - Angular (with SCSS)
 - NodeJS (with ES6)
 - GraphQL (with Apollo)
+
+Project developed for educational purposes, and as a hobby in some free times.
